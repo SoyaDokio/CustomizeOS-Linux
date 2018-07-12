@@ -3,25 +3,51 @@ b=`tput bold`
 n=`tput sgr0`
 c=`tput setaf 2`
 c2=`tput setaf 4`
-ip=`last | awk 'NR==1{print}' | sed "s/.*\s\(\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}\)\s.*/\1/g"`
-json=`curl -s http://ip-api.com/json/${ip}`
-status=`echo ${json} | jq ".status"`
-if [ $status == "\"success\"" ]; then
-    city=`echo ${json} | jq ".city"`
-    regionName=`echo ${json} | jq ".regionName"`
-    country=`echo ${json} | jq ".country"`
-    geolocation=`echo ${city}${regionName}${country} | sed 's/\"\"/, /g' | sed 's/\"//g'`
-    if [ $country == "\"China\"" ]; then
-        echo -e "${ip} -> ${geolocation}"
-    else
-        echo -e "${ip} -> ${c2}${geolocation}${n}"
+lastip=`last | awk 'NR==1{print}' | sed "s/.*\s\(\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}\)\s.*/\1/g"`
+json=`curl -s http://ip-api.com/json/$lastip`
+if [[ `echo $json | grep -P "^\{.*\}$"` ]]; then
+    status=`echo $json | jq -r ".status"`
+    if [ $status == "success" ]; then
+        city=`echo $json | jq -r ".city"`
+        regionName=`echo $json | jq -r ".regionName"`
+        country=`echo $json | jq -r ".country"`
+        geolocation=`echo -e "$city, $regionName, $country"`
+        if [ $country == "China" ]; then
+            echo -e "$lastip -> $geolocation"
+        else
+            echo -e "$lastip -> $c2$geolocation$n"
+        fi
     fi
 fi
-echo -e "${b}${c}Hostname${n}:   `hostname` \t\t ${b}${c}IP address${n}: `ifconfig ens3 | grep "inet " | awk '{print $2}'`"
-echo -e "${b}${c}Processes${n}:  `cat /proc/loadavg | cut -d"/" -f2| cut -d" " -f1` \t\t\t\t ${b}${c}Uptime${n}:     `uptime | sed "s/.*up\s\{1,2\}\([1-5]\?[0-9]\smins\?\|\([0-9]\{1,3\}\sdays\?,\s\)\?[0-9]\?[0-9]:[0-9]\{2\}\),\s[1-9 ][0-9]\suser.*/\1/g"`"
+echo -e "${b}${c}Hostname${n}:   `hostname`"
+
+if [[ `ifconfig | grep -P "inet addr:"` ]]; then # CentOS6/Debian
+    ips=`ifconfig | awk '/inet addr/ {gsub("addr:", "", $2); print $2}'`
+    for i in $ips; do
+        if [[ `echo $i | grep -P "(\d{1,3}\.){3}\d{1,3}"` ]]; then
+#            if [[ `echo $i | grep -P "^127"` || `echo $i | grep -P "^192"` ]]; then
+            if [[ `echo $i | grep -P "^127"` ]]; then
+                :
+            else
+                ip=$i
+            fi
+        else
+            echo "Invalid IP format"
+        fi
+    done
+elif [[ `ifconfig | grep -P "inet:"` ]]; then # CentOS7
+    echo "don't support CentOS 7"
+else
+    echo "don't know type of ifconfig"
+fi
+echo -e "$b${c}IP address$n: $ip"
+echo -e "$b${c}Processes$n:  `cat /proc/loadavg | cut -d"/" -f2| cut -d" " -f1`"
+upt=`uptime | awk -F'( |,|:)+' '{if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days,",h+0,"hours,",m+0,"minutes"}'`
+echo -e "$b${c}Uptime$n:     $upt"
 mf=`cat /proc/meminfo | grep MemFree | awk {'print int($2)'}` # memory free
 mt=`cat /proc/meminfo | grep MemTotal | awk {'print int($2)'}` # memory total
 mu=$[mt-mf] # memory used
 musage=`awk 'BEGIN{printf "%.2f\n",('$mu'/'$mt'*100)}'` # memory usage
-echo -e "${b}${c}CPU load${n}:   `cat /proc/loadavg | cut -d" " -f1-3` \t\t ${b}${c}Memo usage${n}: ${musage}% of `awk 'BEGIN{printf "%.2f\n",('$mt'/1024)}'`MB"
-echo -e "${b}${c}Users logged in${n}: `w | tail -n +3 | wc -l`"
+echo -e "$b${c}CPU load$n:   `cat /proc/loadavg | cut -d" " -f1-3`"
+echo -e "$b${c}Memo usage$n: ${musage}% of `awk 'BEGIN{printf "%.2f\n",('$mt'/1024)}'`MB"
+echo -e "$b${c}Users logged in$n: `w | tail -n +3 | wc -l`"
