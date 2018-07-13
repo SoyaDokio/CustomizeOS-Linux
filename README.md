@@ -28,10 +28,15 @@ Last login: Tue Jul 12 10:03:16 2016 from 192.168.X.XXX
 ```
   
 ```MOTD-script
-Last login: Wed Jul 11 13:42:05 2018 from 192.168.1.1
-192.168.1.1 -> Wuhan, Hubei, China
-Hostname:   MyHostname            IP address: 192.168.1.1
-Processes:  226                   Uptime: 7 days,  2:41
-CPU load:   0.29 0.15 0.06        Memo usage: 90.08% of 923.35MB
-Users logged in: 3
+root@11.22.33.44's password:
+Last login: Fri Jul 13 05:29:14 2018 from 1.2.3.4
+111.175.59.239 -> Wuhan, Hubei, China
+Hostname:   soyadokio.com
+IP address: 11.22.33.44
+Processes:  43
+Uptime:     1 days, 16 hours, 59 minutes
+CPU load:   0.05 0.02 0.00
+Memo usage: 14.72% of 512.00MB
+Users logged in: 1
+[17:47:46 root@soyadokio ~]# 
 ```
