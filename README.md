@@ -1,4 +1,4 @@
-# MOTD-script
+# MOTD4CentOS
 
 类似Ubuntu平台的`landscape-common`，可实现CentOS平台上简单的MOTD（Message of the day）
   
@@ -27,8 +27,8 @@ Welcome to Ubuntu 16.04 LTS (GNU/Linux 4.4.0-28-generic x86_64)
 Last login: Tue Jul 12 10:03:16 2016 from 192.168.X.XXX
 ```
   
-下面是`MotdForCentOS`的效果预览
-```MotdForCentOS
+下面是`MOTD4CentOS`的效果预览
+```MOTD4CentOS
 root@11.22.33.44's password:
 Last login: Fri Jul 13 05:29:14 2018 from 111.175.59.239
 111.175.59.239 -> Wuhan, Hubei, China
