@@ -26,15 +26,16 @@ if [[ `ifconfig | grep -P "inet addr:"` ]]; then # CentOS6/Debian
         if [[ `echo $i | grep -P "(\d{1,3}\.){3}\d{1,3}"` ]]; then
             echo -e "${b}${c}Hostname${n}:   `hostname` ($ip)"
         else
+            :
 #            echo "Invalid IP format"
         fi
     done
 elif [[ `ifconfig | grep -P "inet:"` ]]; then # CentOS7
 #    echo "don't support CentOS 7"
-echo -e "${b}${c}Hostname${n}:   `hostname`"
+    echo -e "${b}${c}Hostname${n}:   `hostname`"
 else
 #    echo "don't know type of ifconfig"
-echo -e "${b}${c}Hostname${n}:   `hostname`"
+    echo -e "${b}${c}Hostname${n}:   `hostname`"
 fi
 echo -e "$b${c}Processes$n:  `cat /proc/loadavg | cut -d"/" -f2| cut -d" " -f1`"
 upt=`uptime | awk -F'( |,|:)+' '{if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days,",h+0,"hours,",m+0,"minutes"}'`
