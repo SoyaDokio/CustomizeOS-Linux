@@ -4,7 +4,7 @@ n=`tput sgr0`
 c=`tput setaf 2`
 c2=`tput setaf 4`
 lastip=`last | awk 'NR==1{print}' | sed "s/.*\s\(\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}\)\s.*/\1/g"`
-json=`curl -s http://ip-api.com/json/$lastip`
+json=`timeout 1 curl -s http://ip-api.com/json/$lastip`
 if [[ `echo $json | grep -P "^\{.*\}$"` ]]; then
     status=`echo $json | jq -r ".status"`
     if [ $status == "success" ]; then
@@ -28,6 +28,7 @@ if [[ `ifconfig | grep -P "inet addr:"` ]]; then # CentOS6/Debian
                 :
             else
                 echo -e "${b}${c}Hostname${n}:   `hostname` ($ip)"
+                break
             fi
 
         else
