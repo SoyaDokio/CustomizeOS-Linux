@@ -22,9 +22,14 @@ fi
 
 if [[ `ifconfig | grep -P "inet addr:"` ]]; then # CentOS6/Debian
     ips=`ifconfig | awk '/inet addr/ {gsub("addr:", "", $2); print $2}'`
-    for i in $ips; do
-        if [[ `echo $i | grep -P "(\d{1,3}\.){3}\d{1,3}"` ]]; then
-            echo -e "${b}${c}Hostname${n}:   `hostname` ($ip)"
+    for ip in $ips; do
+        if [[ `echo $ip | grep -P "(\d{1,3}\.){3}\d{1,3}"` ]]; then
+            if [[ `echo $ip | grep -P "^127.0.0.1$"` ]]; then
+                :
+            else
+                echo -e "${b}${c}Hostname${n}:   `hostname` ($ip)"
+            fi
+
         else
             :
 #            echo "Invalid IP format"
