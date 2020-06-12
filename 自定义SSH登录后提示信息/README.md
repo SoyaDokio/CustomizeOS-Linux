@@ -16,7 +16,7 @@ Last login: Fri Jul 13 05:29:14 2018 from 111.175.59.239
 
 说明：上面是原样输出，可如果需要动态内容，就需要用到自启动命令打印内容来模拟MOTD的效果。
 
-操作：新建`/etc/profile.d/motd.sh`，内容为本项目下`motd.sh`的内容，则可达成如下效果：
+操作：新建 `/etc/profile.d/motd.sh` ，内容为当前目录下 `motd.sh` 的内容，则可达成如下效果：
 ```
 root@11.22.33.44's password:
 Last login: Fri Jul 13 05:29:14 2018 from 111.175.59.239
