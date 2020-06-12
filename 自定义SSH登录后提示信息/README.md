@@ -1,4 +1,4 @@
-# MOTD4CentOS
+# 自定义SSH登录后提示信息
 
 CentOS 平台上有个简单的小功能：MOTD（Message of the day），可时用户登录 SSH 时原样输出用户指定内容。
 例如修改 `/etc/motd` 为：

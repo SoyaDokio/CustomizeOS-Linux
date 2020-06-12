@@ -1,4 +1,4 @@
-# bashrc
+# 自定义prompt样式
 
 ![prompt screenshoot](https://user-images.githubusercontent.com/16408325/83832375-1ca94680-a71c-11ea-9afe-cb336f005a5c.png)
 

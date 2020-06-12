@@ -1,4 +1,4 @@
-# profile
+# 自定义命令ll时间标签
 
 修改 CentOS 中 `ls -l` 命令显示时间格式为*yyyy-MM-dd HH:mm:ss*
 
@@ -18,6 +18,11 @@
 export TIME_STYLE='+%Y-%m-%d %H:%M:%S'
 ```
 
+然后执行以下命令即可生效：
+```bash
+source /etc/profile
+```
+
 ### 永久更改
 
 永久改变显示样式，当前会话结束、系统重启等操作之后，更改后的效果不受影响
@@ -29,5 +34,5 @@ export TIME_STYLE='+%Y-%m-%d %H:%M:%S'
 
 然后执行以下命令即可生效：
 ```bash
-source /etc/bashrc
+source /etc/profile
 ```
